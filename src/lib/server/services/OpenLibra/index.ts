@@ -1,75 +1,77 @@
 // This code wrap the REST API of OpenLibra: https://openlibra.com/en/page/public-api
 
-const urlApiOpenLibra = 'https://www.etnassoft.com/api/v1/get/';
+const OpenLibraApiUrl = 'https://www.etnassoft.com/api/v1/get/';
 
-async function fetchApiOpenLibra<T>(params: ParamsApiOpenLibra): Promise<T[]> {
+async function fetchOpenLibraApi<T>(params: OpenLibraApiParams): Promise<T> {
 	const searchParams = new URLSearchParams(Object.entries(params).filter((param) => param != null));
-	const url = new URL(urlApiOpenLibra);
+	const url = new URL(OpenLibraApiUrl);
 	url.search = searchParams.toString();
 	return fetch(url)
 		.then((response) => response.text())
 		.then((text) => JSON.parse(text));
 }
 
-export function getBookById(id: Id): Promise<Book | undefined> {
-	const params: ParamsApiOpenLibra = {
+export function getOpenLibraBookById(id: Id): Promise<OpenLibraBook | undefined> {
+	const params: OpenLibraApiParams = {
 		id,
 		json: true,
 		decode: true
 	};
 
-	return fetchApiOpenLibra<Book>(params).then((books) => books.at(0));
+	return fetchOpenLibraApi<OpenLibraBook[]>(params).then((books) => books.at(0));
 }
 
-export function getBooks(filters?: BooksFilters): Promise<Book[]> {
-	const params: ParamsApiOpenLibra = {
+export function getOpenLibraBooks(filters?: OpenLibraBooksFilters): Promise<OpenLibraBook[]> {
+	const params: OpenLibraApiParams = {
 		...filters,
 		json: true,
 		decode: true
 	};
 
-	return fetchApiOpenLibra(params);
+	return fetchOpenLibraApi(params);
 }
 
-export function getBooksCount(filters?: BooksFilters): Promise<Book[]> {
-	const params: ParamsApiOpenLibra = {
+export function getOpenLibraBooksCount(filters?: OpenLibraBooksFilters): Promise<number> {
+	const params: OpenLibraApiParams = {
 		...filters,
 		count_items: true,
 		json: true,
 		decode: true
 	};
 
-	return fetchApiOpenLibra(params);
+	return fetchOpenLibraApi<OpenLibraNumItems>(params).then(({ num_items }) => num_items);
 }
 
-export function getCategories(): Promise<Category[]> {
-	const params: ParamsApiOpenLibra = {
+export function getOpenLibraCategories(): Promise<Category[]> {
+	const params: OpenLibraApiParams = {
 		get_categories: 'all',
 		json: true,
 		decode: true
 	};
 
-	return fetchApiOpenLibra(params);
+	return fetchOpenLibraApi(params);
 }
 
-export function getCategoryById(id: CategoryId): Promise<Category | undefined> {
-	const params: ParamsApiOpenLibra = {
+export function getOpenLibraCategoryById(id: OpenLibraId): Promise<OpenLibraCategory | undefined> {
+	const params: OpenLibraApiParams = {
 		get_categories: 'all',
 		json: true,
 		decode: true
 	};
 
-	return fetchApiOpenLibra<Category>(params).then((categories) =>
+	return fetchOpenLibraApi<OpenLibraCategory[]>(params).then((categories) =>
 		categories.find(({ category_id: categoryId }) => categoryId === id)
 	);
 }
 
-export function getSubcategoriesByCategoryId(id: CategoryId): Promise<Subcategory[]> {
-	const params: ParamsApiOpenLibra = {
+export function getOpenLibraSubcategoriesByCategoryId(
+	id: OpenLibraId
+): Promise<OpenLibraSubcategory[]> {
+	const params: OpenLibraApiParams = {
 		get_subcategories_by_category_ID: id,
 		json: true,
 		decode: true
 	};
 
-	return fetchApiOpenLibra(params);
+	return fetchOpenLibraApi(params);
 }

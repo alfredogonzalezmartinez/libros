@@ -1,8 +1,7 @@
-type Id = number;
-type CategoryId = number;
+type OpenLibraId = number;
 
-interface ParamsApiOpenLibra {
-	id?: id | null;
+interface OpenLibraApiParams {
+	id?: OpenLibraId | null;
 	book_title?: string | null;
 	book_author?: string | null;
 	publisher?: string | null;
@@ -27,7 +26,12 @@ interface ParamsApiOpenLibra {
 	get_subcategories_by_category_ID?: number | null;
 }
 
-interface Book {
+type OpenLibraBooksFilters = Omit<
+	OpenLibraParamsApi,
+	'id' | 'count_items' | 'decode' | 'json' | 'get_categories' | 'get_subcategories_by_category_ID'
+>;
+
+interface OpenLibraBook {
 	ID: string;
 	title: string;
 	author: string;
@@ -42,29 +46,28 @@ interface Book {
 	cover: string;
 	thumbnail: string;
 	num_comments: string;
-	categories: Category[];
+	categories: OpenLibraCategory[];
 	tags: Tag[];
 }
 
-interface Category {
-	category_id: CategoryId;
+interface OpenLibraCategory {
+	category_id: OpenLibraId;
 	name: string;
 	nicename: string;
 }
 
-interface Subcategory {
-	subcategory_id: number;
+interface OpenLibraSubcategory {
+	subcategory_id: OpenLibraId;
 	name: string;
 	nicename: string;
 }
 
-interface Tag {
-	tag_id: number;
+interface OpenLibraTag {
+	tag_id: OpenLibraId;
 	name: string;
 	nicename: string;
 }
 
-type BooksFilters = Omit<
-	ParamsApiOpenLibra,
-	'id' | 'count_items' | 'decode' | 'json' | 'get_categories' | 'get_subcategories_by_category_ID'
->;
+interface OpenLibraNumItems {
+	num_items: number;
+}
