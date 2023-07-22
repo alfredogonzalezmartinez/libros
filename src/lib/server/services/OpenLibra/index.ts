@@ -57,13 +57,7 @@ export function getOpenLibraCategories(): Promise<OpenLibraCategory[]> {
 }
 
 export function getOpenLibraCategoryById(id: OpenLibraId): Promise<OpenLibraCategory | undefined> {
-	const params: OpenLibraApiParams = {
-		get_categories: 'all',
-		json: true,
-		decode: true
-	};
-
-	return fetchOpenLibraApi<OpenLibraCategory[]>(params).then((categories) =>
+	return getOpenLibraCategories().then((categories) =>
 		categories.find(({ category_id: categoryId }) => categoryId === id)
 	);
 }
