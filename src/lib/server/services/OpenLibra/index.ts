@@ -46,7 +46,7 @@ export function getOpenLibraBooksCount(filters?: OpenLibraBooksFilters): Promise
 	return fetchOpenLibraApi<OpenLibraNumItems>(params).then(({ num_items }) => num_items);
 }
 
-export function getOpenLibraCategories(): Promise<Category[]> {
+export function getOpenLibraCategories(): Promise<OpenLibraCategory[]> {
 	const params: OpenLibraApiParams = {
 		get_categories: 'all',
 		json: true,
