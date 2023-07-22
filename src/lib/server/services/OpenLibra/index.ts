@@ -3,9 +3,13 @@
 const OpenLibraApiUrl = 'https://www.etnassoft.com/api/v1/get/';
 
 async function fetchOpenLibraApi<T>(params: OpenLibraApiParams): Promise<T> {
-	const searchParams = new URLSearchParams(Object.entries(params).filter((param) => param != null));
+	const searchParams = new URLSearchParams(
+		Object.entries(params).filter(([, value]) => value != null)
+	);
+
 	const url = new URL(OpenLibraApiUrl);
 	url.search = searchParams.toString();
+
 	return fetch(url)
 		.then((response) => response.text())
 		.then((text) => JSON.parse(text));
